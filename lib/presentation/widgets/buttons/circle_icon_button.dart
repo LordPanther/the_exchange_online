@@ -1,0 +1,38 @@
+import 'package:the_exchange_online/configs/size_config.dart';
+import 'package:the_exchange_online/constants/color_constant.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+class CircleIconButton extends StatelessWidget {
+  final double size;
+  final Function? onPressed;
+  final String svgIcon;
+  final Color color;
+
+  const CircleIconButton({
+    super.key,
+    required this.size,
+    required this.svgIcon,
+    this.onPressed,
+    this.color = COLOR_CONST.secondaryColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed as void Function()?,
+      child: Container(
+        padding: EdgeInsets.all(SizeConfig.defaultSize),
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset(
+          svgIcon,
+          width: size,
+          height: size,
+        ),
+      ),
+    );
+  }
+}

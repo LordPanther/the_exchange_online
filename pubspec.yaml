@@ -1,0 +1,63 @@
+name: the_exchange_online
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  firebase_core: ^4.0.0
+  google_sign_in: ^7.1.1
+  carousel_slider: ^5.1.1
+  cloud_firestore: ^6.0.0
+  dio: ^5.9.0
+  equatable: ^2.0.7
+  firebase_auth: ^6.0.1
+  flutter_bloc: ^9.1.1
+  intl: ^0.20.2
+  meta: ^1.16.0
+  shared_preferences: ^2.5.3
+  shimmer_image: ^0.0.2
+  rxdart: ^0.28.0
+  path_provider: ^2.1.5
+  flutter_svg: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/locale/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
+          weight: 600
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins/Poppins-Regular.otf
+          weight: 400
+        - asset: assets/fonts/poppins/Poppins-Medium.otf
+          weight: 500
+        - asset: assets/fonts/poppins/Poppins-SemiBold.otf
+          weight: 600
