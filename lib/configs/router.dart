@@ -3,8 +3,6 @@
 import 'package:the_exchange_online/presentation/screens/add_product/add_product_screen.dart';
 import 'package:the_exchange_online/presentation/screens/center/center_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:the_exchange_online/presentation/screens/create_shop/create_shop_screen.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_event.dart';
 import 'package:the_exchange_online/presentation/screens/my_shop/shop_screen.dart';
 import 'package:the_exchange_online/presentation/screens/splash/splash_screen.dart';
 
@@ -28,7 +26,7 @@ class AppRouter {
       case CENTER:
         return MaterialPageRoute(builder: (_) => const CenterScreen());
       case CREATE_SHOP:
-        return MaterialPageRoute(builder: (_) => const CreateShopScreen());
+        // return MaterialPageRoute(builder: (_) => const CreateShopScreen());
       case MY_SHOP:
         return MaterialPageRoute(builder: (_) => const ShopScreen());
       case ADD_PRODUCT:

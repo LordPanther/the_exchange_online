@@ -8,10 +8,10 @@ abstract class ShopState extends Equatable {
   List<Object> get props => [];
 }
 
-/// Store loading
+///Shop loading
 class ShopLoading extends ShopState {}
 
-/// Store was loaded
+///Shop loaded
 class ShopLoaded extends ShopState {
   final ShopModel? shop;
 
@@ -23,7 +23,17 @@ class ShopLoaded extends ShopState {
   List<Object> get props => [shop!];
 }
 
-/// Store wasn't loaded
+///Creating shop threw an error
+class ShopCreateError extends ShopState {
+  final String error;
+
+  const ShopCreateError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+///Shop failed to load
 class ShopLoadError extends ShopState {
   final String error;
 
@@ -33,16 +43,16 @@ class ShopLoadError extends ShopState {
   List<Object> get props => [error];
 }
 
-// Shop not found
+//Shop does not exist
 class ShopNotFound extends ShopState {}
 
-/// Adding or Updating product
+///Adding or Updating product
 class ProductUpdating extends ShopState {}
 
-/// Product added or updated
+///Product added or updated
 class ProductUpdated extends ShopState {}
 
-/// Product processing failure
+///Product processing failure
 class ProductUpdateFailure extends ShopState {
   final String error;
 

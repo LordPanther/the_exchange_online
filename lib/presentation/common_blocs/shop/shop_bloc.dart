@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_exchange_online/data/repository/app_repository.dart';
 import 'package:the_exchange_online/data/repository/auth_repository/auth_repo.dart';
 import 'package:the_exchange_online/data/repository/store_repository/shop_repo.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/bloc.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_state.dart';
+import 'package:the_exchange_online/presentation/common_blocs/shop/bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/shop/shop_state.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
   final AuthRepository _authRepository = AppRepository.authRepository;
@@ -18,8 +18,11 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     on<LoadShop>((event, emit) async {
       await _mapLoadShopToState(event, emit);
     });
+    on<CreateShop>((event, emit) async {
+      await _mapCreateShopToState(event, emit);
+    });
     on<DeleteShop>((event, emit) async {
-      await _mapDeleShopToState(event, emit);
+      await _mapDeleteShopToState(event, emit);
     });
     on<UpdateShop>((event, emit) async {
       await _mapUpdateStoreToState(event, emit);
@@ -44,21 +47,26 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     });
   }
 
+  //Load shop
   Future<void> _mapLoadShopToState(event, Emitter<ShopState> emit) async {
     try {
       await _shopSubscription?.cancel();
       _currentShop = _authRepository.currentUser.uid;
-      _shopSubscription =
-          _shopRepository.fetchShop(_currentShop).listen((shop) async {
-        if (shop != null) {
-          add(ShopUpdated(shop));
-        } else {
-          debugPrint("Shop Not Found");
-          add(NoShopFound());
-        }
-      }, onError: (error) {
-        add(ShopLoadFailure(error.toString()));
-      });
+      _shopSubscription = _shopRepository
+          .fetchShop(_currentShop)
+          .listen(
+            (shop) async {
+              if (shop != null) {
+                add(ShopUpdated(shop));
+              } else {
+                debugPrint("Shop Not Found");
+                add(NoShopFound());
+              }
+            },
+            onError: (error) {
+              add(ShopLoadFailure(error.toString()));
+            },
+          );
     } catch (e) {
       if (!emit.isDone) {
         emit(ShopLoadError(e.toString()));
@@ -66,12 +74,21 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     }
   }
 
-  Future<void> _mapDeleShopToState(event, Emitter<ShopState> emit) async {
+  //Create shop
+  Future<void> _mapCreateShopToState(event, Emitter<ShopState> emit) async {
+    try {} catch (error) {
+      const ShopCreateError("store_create_error");
+    }
+  }
+
+  //Delete shop
+  Future<void> _mapDeleteShopToState(event, Emitter<ShopState> emit) async {
     try {} catch (error) {
       const ShopLoadFailure("store_delete_error");
     }
   }
 
+  //Update shop
   Future<void> _mapUpdateStoreToState(event, Emitter<ShopState> emit) async {
     try {} catch (e) {
       const ShopLoadFailure("store_update_error");
@@ -81,21 +98,22 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     }
   }
 
-  /// Adding new product store
+  ///Add new product to shop
   Future<void> _mapAddProductToState(event, Emitter<ShopState> emit) async {
     var imageFiles = event.images;
   }
 
-  /// Updating an existing product
+  ///Update product data
   Future<void> _mapUpdateProductToState(event, Emitter<ShopState> emit) async {
     var imageFiles = event.images;
   }
 
-  /// Deleting a product
+  ///Delete product
   Future<void> _mapDeleteProductToState(event, Emitter<ShopState> emit) async {
     var imageFiles = event.images;
   }
 
+  //Shop updated
   Future<void> _mapShopUpdatedToState(event, Emitter<ShopState> emit) async {
     var shop = event.shop;
 
@@ -103,12 +121,16 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     emit(ShopLoaded(shop: shop));
   }
 
+  //Shop does not exist
   Future<void> _mapNoShopFoundToState(event, Emitter<ShopState> emit) async {
     emit(ShopNotFound());
   }
 
+  //Loading shop failed
   Future<void> _mapShopLoadFailureToState(
-      event, Emitter<ShopState> emit) async {
+    event,
+    Emitter<ShopState> emit,
+  ) async {
     var error = event.error;
 
     emit(ShopLoadError(error));

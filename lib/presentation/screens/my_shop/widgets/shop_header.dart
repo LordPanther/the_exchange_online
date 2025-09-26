@@ -4,8 +4,8 @@ import 'package:the_exchange_online/configs/router.dart';
 import 'package:the_exchange_online/configs/size_config.dart';
 import 'package:the_exchange_online/constants/color_constant.dart';
 import 'package:the_exchange_online/constants/font_constant.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/bloc.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_state.dart';
+import 'package:the_exchange_online/presentation/common_blocs/shop/bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/shop/shop_state.dart';
 import 'package:the_exchange_online/presentation/widgets/buttons/center_button.dart';
 import 'package:the_exchange_online/presentation/widgets/others/search_field_widget.dart';
 import 'package:the_exchange_online/utils/auth_cycle_handler.dart';
@@ -18,22 +18,17 @@ class ShopHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<ShopHeader> {
-  late final AuthManager authManager;
+  // late final AuthManager authManager;
 
-  @override
-  void initState() {
-    super.initState();
-    authManager = AuthManager(context);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   authManager = AuthManager(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildAppBar(),
-        _buildSearchBar(),
-      ],
-    );
+    return Column(children: [_buildAppBar(), _buildSearchBar()]);
   }
 
   Widget _buildAppBar() {
@@ -81,15 +76,9 @@ class _HomeHeaderState extends State<ShopHeader> {
                       color: COLOR_CONST.whiteColor,
                     ),
                   ),
-            Text(
-              "PowerParts Co. ",
-              style: FONT_CONST.REGULAR_DEFAULT_18,
-            ),
+            Text("PowerParts Co. ", style: FONT_CONST.REGULAR_DEFAULT_18),
             Text(" | ", style: FONT_CONST.REGULAR_DEFAULT_16),
-            Text(
-              " @lindani_ngubane",
-              style: FONT_CONST.REGULAR_DEFAULT_18,
-            ),
+            Text(" @lindani_ngubane", style: FONT_CONST.REGULAR_DEFAULT_18),
           ],
         ),
         Row(
@@ -115,7 +104,7 @@ class _HomeHeaderState extends State<ShopHeader> {
               },
             ),
           ],
-        )
+        ),
       ],
     );
   }
@@ -128,8 +117,9 @@ _buildSearchBar() {
     color: COLOR_CONST.primaryColor,
     child: Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.defaultSize * 10,
-          vertical: SizeConfig.defaultSize * 1.5),
+        horizontal: SizeConfig.defaultSize * 10,
+        vertical: SizeConfig.defaultSize * 1.5,
+      ),
       child: SearchFieldWidget(
         height: double.maxFinite,
         onTap: () {},

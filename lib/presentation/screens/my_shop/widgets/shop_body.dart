@@ -4,27 +4,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:the_exchange_online/configs/config.dart';
 import 'package:the_exchange_online/constants/font_constant.dart';
 import 'package:the_exchange_online/constants/icon_constant.dart';
-import 'package:the_exchange_online/constants/image_constant.dart';
 import 'package:the_exchange_online/data/models/product_model.dart';
 import 'package:the_exchange_online/data/models/shop_model.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_bloc.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_event.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_state.dart';
-
+import 'package:the_exchange_online/presentation/common_blocs/shop/shop_bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/shop/shop_event.dart';
 import 'package:the_exchange_online/presentation/widgets/others/custom_dismissible.dart';
 import 'package:the_exchange_online/presentation/widgets/single_card/add_product_image_card.dart';
 import 'package:the_exchange_online/presentation/widgets/single_card/product_image_card.dart';
-import 'package:the_exchange_online/utils/dialog.dart';
 import 'package:the_exchange_online/utils/translate.dart';
 
 class ShopBody extends StatefulWidget {
-  const ShopBody({super.key});
+  final ShopModel? shop;
+
+  const ShopBody({super.key, required this.shop});
 
   @override
   State<ShopBody> createState() => _ShopBodyState();
 }
 
 class _ShopBodyState extends State<ShopBody> {
+  ShopModel? get shop => widget.shop;
   ProductModel? _selectedProduct;
 
   void _onDismissed(BuildContext context, ProductModel product) {
@@ -37,57 +36,13 @@ class _ShopBodyState extends State<ShopBody> {
 
   @override
   Widget build(BuildContext context) {
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Center(
-    //       child: Text(
-    //         "SHOP SCREEN",
-    //         style: FONT_CONST.BOLD_BLACK_28,
-    //       ),
-    //     )
-    //   ],
-    // );
-    return BlocListener<ShopBloc, ShopState>(
-      listener: (context, state) {
-        if (state is ShopLoading) {
-          UtilDialog.showWaiting(context);
-        } else {
-          UtilDialog.hideWaiting(context);
-        }
-
-        if (state is ShopLoadError) {
-          UtilDialog.showInformation(context, content: state.error);
-        }
-
-        // Navigate to shop screen after creation
-        if (state is ShopLoaded) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(
-              context,
-            ).pushReplacement(MaterialPageRoute(builder: (_) => ShopBody()));
-          });
-        }
-      },
-      child: BlocBuilder<ShopBloc, ShopState>(
-        builder: (context, shopState) {
-          if (shopState is ShopLoaded) {
-            var shop = shopState.shop;
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildStoreProducts(shop!.products),
-                  SizedBox(height: SizeConfig.defaultSize * 10),
-                  _buildStoreProductDetails(),
-                ],
-              ),
-            );
-          }
-          if (shopState is ShopNotFound) {
-            Navigator.of(context).pushReplacementNamed(AppRouter.CREATE_SHOP);
-          }
-          return const Center(child: Text("Something went wrong."));
-        },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildStoreProducts(widget.shop!.products),
+          SizedBox(height: SizeConfig.defaultSize * 10),
+          _buildStoreProductDetails(),
+        ],
       ),
     );
   }

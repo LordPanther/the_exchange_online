@@ -33,6 +33,15 @@ class ShopUpdated extends ShopEvent {
   List<Object> get props => [shop!];
 }
 
+class CreateShop extends ShopEvent {
+  final ShopModel shop;
+
+  const CreateShop(this.shop);
+
+  @override
+  List<Object> get props => [shop];
+}
+
 /// When user swipes to remove cart item => remove cart item event
 class DeleteShop extends ShopEvent {
   final ShopModel shop;
