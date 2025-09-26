@@ -7,6 +7,7 @@ import 'package:the_exchange_online/presentation/common_blocs/order/order_bloc.d
 import 'package:the_exchange_online/presentation/common_blocs/sign_in/sign_in_bloc.dart';
 import 'package:the_exchange_online/presentation/common_blocs/sign_up/sign_up_bloc.dart';
 import 'package:the_exchange_online/presentation/common_blocs/verification/verification_bloc.dart';
+import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_bloc.dart';
 
 class CommonBloc {
   /// Bloc
@@ -21,33 +22,14 @@ class CommonBloc {
   // static final storeBloc = ShopBloc();
 
   static final List<BlocProvider> blocProviders = [
-    BlocProvider<ApplicationBloc>(
-      create: (context) => applicationBloc,
-    ),
-    BlocProvider<AuthenticationBloc>(
-      create: (context) => authenticationBloc,
-    ),
-    BlocProvider<SignInBloc>(
-      create: (context) => signInloc,
-    ),
-    BlocProvider<SignUpBloc>(
-      create: (context) => signUpBloc,
-    ),
-    BlocProvider<VerificationBloc>(
-      create: (context) => verificationBloc,
-    ),
-    BlocProvider<LanguageBloc>(
-      create: (context) => languageBloc,
-    ),
-    BlocProvider<CartBloc>(
-      create: (context) => cartBloc,
-    ),
-    BlocProvider<OrderBloc>(
-      create: (context) => orderBloc,
-    ),
-    // BlocProvider<ShopBloc>(
-    //   create: (context) => storeBloc,
-    // ),
+    BlocProvider<ApplicationBloc>(create: (context) => applicationBloc),
+    BlocProvider<AuthenticationBloc>(create: (context) => authenticationBloc),
+    BlocProvider<SignInBloc>(create: (context) => signInloc),
+    BlocProvider<SignUpBloc>(create: (context) => signUpBloc),
+    BlocProvider<VerificationBloc>(create: (context) => verificationBloc),
+    BlocProvider<LanguageBloc>(create: (context) => languageBloc),
+    BlocProvider<CartBloc>(create: (context) => cartBloc),
+    BlocProvider<OrderBloc>(create: (context) => orderBloc),
   ];
 
   /// Dispose

@@ -5,6 +5,7 @@ import 'package:the_exchange_online/configs/config.dart';
 import 'package:the_exchange_online/constants/color_constant.dart';
 import 'package:the_exchange_online/constants/font_constant.dart';
 import 'package:the_exchange_online/constants/image_constant.dart';
+import 'package:the_exchange_online/presentation/screens/my_shop/shop_screen.dart';
 import 'package:the_exchange_online/utils/auth_cycle_handler.dart';
 import 'package:the_exchange_online/utils/formatter.dart';
 
@@ -33,7 +34,7 @@ class _CenterHeaderState extends State<CenterHeader> {
   void onNavigate(String route) async {
     switch (route) {
       case "sell":
-        authManager.signIn("/shop");
+        authManager.signIn("/my_shop");
         break;
       case "sign_in":
         authManager.signIn("/center");
@@ -90,8 +91,7 @@ class _CenterHeaderState extends State<CenterHeader> {
                 builder is Authenticated
                     ? CenterButton(
                         onPressed: () {
-                          debugPrint("Navigating to my shop");
-                          Navigator.pushNamed(context, "AppRouter.MY_SHOP");
+                          Navigator.of(context).pushNamed(AppRouter.MY_SHOP);
                         },
                         name: "My Shop",
                       )
@@ -128,7 +128,7 @@ class _CenterHeaderState extends State<CenterHeader> {
           onPressed: () {
             Navigator.pushNamed(context, AppRouter.PROFILE);
           },
-          name: "${UtilFormatter.getDisplayName(email)}",
+          name: UtilFormatter.getDisplayName(email),
         ),
         Text("|", style: FONT_CONST.REGULAR_DEFAULT_16),
         IconButton(

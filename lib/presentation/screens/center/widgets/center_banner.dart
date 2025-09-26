@@ -29,8 +29,9 @@ class _CenterBannerState extends State<CenterBanner> {
       children: [
         SizedBox(height: SizeConfig.defaultSize * 0.5),
         _buildSlider(),
-        SizedBox(height: SizeConfig.defaultSize * 1),
+        SizedBox(height: SizeConfig.defaultSize * 3),
         _buildIndicators(),
+        SizedBox(height: SizeConfig.defaultSize * 3),
       ],
     );
   }

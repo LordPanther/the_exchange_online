@@ -1,10 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:the_exchange_online/data/models/product_model.dart';
+import 'package:the_exchange_online/presentation/screens/add_product/add_product_screen.dart';
 import 'package:the_exchange_online/presentation/screens/center/center_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../presentation/screens/splash/splash_screen.dart';
+import 'package:the_exchange_online/presentation/screens/create_shop/create_shop_screen.dart';
+import 'package:the_exchange_online/presentation/screens/my_shop/bloc/shop_event.dart';
+import 'package:the_exchange_online/presentation/screens/my_shop/shop_screen.dart';
+import 'package:the_exchange_online/presentation/screens/splash/splash_screen.dart';
 
 class AppRouter {
   static const String SPLASH = '/splash';
@@ -12,28 +14,29 @@ class AppRouter {
   static const String INITIALIZE_INFO = '/initialize_info';
   static const String REGISTER = '/register';
   static const String CENTER = '/center';
+  static const String CREATE_SHOP = '/create_shop';
+  static const String MY_SHOP = '/my_shop';
+  static const String ADD_PRODUCT = '/add_product';
   static const String PROFILE = '/profile';
   static const String VERIFY_USER = '/verify_user';
-
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       //Home
       case SPLASH:
-        return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case CENTER:
-        return MaterialPageRoute(
-          builder: (_) => const CenterScreen(),
-        );
-
+        return MaterialPageRoute(builder: (_) => const CenterScreen());
+      case CREATE_SHOP:
+        return MaterialPageRoute(builder: (_) => const CreateShopScreen());
+      case MY_SHOP:
+        return MaterialPageRoute(builder: (_) => const ShopScreen());
+      case ADD_PRODUCT:
+        return MaterialPageRoute(builder: (_) => const AddProductScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
