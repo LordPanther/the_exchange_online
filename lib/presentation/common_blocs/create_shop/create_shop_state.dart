@@ -15,9 +15,7 @@ class ShopLoading extends ShopState {}
 class ShopLoaded extends ShopState {
   final ShopModel? shop;
 
-  const ShopLoaded({
-    required this.shop,
-  });
+  const ShopLoaded({required this.shop});
 
   @override
   List<Object> get props => [shop!];

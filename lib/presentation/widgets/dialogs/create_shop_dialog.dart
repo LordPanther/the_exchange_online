@@ -1,29 +1,30 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'package:the_exchange_online/configs/config.dart';
-import 'package:the_exchange_online/data/models/user_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:the_exchange_online/constants/constants.dart';
-import 'package:the_exchange_online/presentation/common_blocs/sign_up/sign_up_bloc.dart';
-import 'package:the_exchange_online/presentation/common_blocs/sign_up/sign_up_event.dart';
-import 'package:the_exchange_online/presentation/common_blocs/sign_up/sign_up_state.dart';
-import 'package:the_exchange_online/presentation/widgets/buttons/offer_subscription.dart';
-import 'package:the_exchange_online/utils/utils.dart';
+import 'package:the_exchange_online/configs/size_config.dart';
+import 'package:the_exchange_online/constants/color_constant.dart';
+import 'package:the_exchange_online/constants/font_constant.dart';
+import 'package:the_exchange_online/data/models/shop_model.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/create_shop_bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/create_shop_event.dart';
+import 'package:the_exchange_online/utils/dialog.dart';
+import 'package:the_exchange_online/utils/translate.dart';
 
-class SignUpDialog extends StatefulWidget {
-  const SignUpDialog({super.key});
+class CreateShopScreen extends StatefulWidget {
+  const CreateShopScreen({super.key});
+
   @override
-  _SignUpDialogState createState() => _SignUpDialogState();
+  State<CreateShopScreen> createState() => _CreateShopScreenState();
 }
 
-class _SignUpDialogState extends State<SignUpDialog> {
-  late TextEditingController _phoneNumberController;
-  late TextEditingController _emailController;
-  late TextEditingController _handleController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
+class _CreateShopScreenState extends State<CreateShopScreen> {
+  late TextEditingController _name;
+  late TextEditingController _description;
+  late TextEditingController _email;
+  late TextEditingController _phoneNumber;
+  late TextEditingController _logo;
+  late TextEditingController _createdAt;
+  late TextEditingController _updatedAt;
 
   bool isShowPassword = false;
   bool isShowConfirmPassword = false;
@@ -31,52 +32,56 @@ class _SignUpDialogState extends State<SignUpDialog> {
 
   @override
   void initState() {
-    _phoneNumberController = TextEditingController();
-    _emailController = TextEditingController();
-    _handleController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _name = TextEditingController();
+    _description = TextEditingController();
+    _email = TextEditingController();
+    _phoneNumber = TextEditingController();
+    _logo = TextEditingController();
+    _createdAt = TextEditingController();
+    _updatedAt = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _phoneNumberController.dispose();
-    _emailController.dispose();
-    _handleController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _name.dispose();
+    _description.dispose();
+    _email.dispose();
+    _phoneNumber.dispose();
+    _logo.dispose();
+    _createdAt.dispose();
+    _updatedAt.dispose();
     super.dispose();
   }
 
   bool get isPopulated =>
-      _phoneNumberController.text.isNotEmpty &&
-      _emailController.text.isNotEmpty &&
-      _handleController.text.isNotEmpty &&
-      _passwordController.text.isNotEmpty &&
-      _confirmPasswordController.text.isNotEmpty;
+      _name.text.isNotEmpty &&
+      _description.text.isNotEmpty &&
+      _email.text.isNotEmpty &&
+      _phoneNumber.text.isNotEmpty &&
+      _logo.text.isNotEmpty;
 
   bool isRegisterButtonEnabled() {
-    return context.read<SignUpBloc>().state.isFormValid &&
-        !context.read<SignUpBloc>().state.isSubmitting! &&
+    return context.read<ShopBloc>().state.isFormValid &&
+        !context.read<ShopBloc>().state.isSubmitting! &&
         isPopulated;
   }
 
-  void onRegister() {
+  void onCreateShop(ShopModel shop) {
     if (isRegisterButtonEnabled()) {
-      UserModel user = UserModel(
-        email: _emailController.text,
-        phoneNumber: _phoneNumberController.text,
-        handle: _handleController.text,
+      final shop = ShopModel(
+        name: _name.text,
+        description: _description.text,
+        email: _email.text,
+        phoneNumber: _phoneNumber.text,
+        logo: _logo.text,
+        createdAt: DateTime.now().toIso8601String(),
+        updatedAt: DateTime.now().toIso8601String(),
+        id: '',
+        tenant: null,
+        isActive: null,
       );
-      context.read<SignUpBloc>().add(
-        SignUp(
-          user: user,
-          password: _passwordController.text,
-          confirmPassword: _confirmPasswordController.text,
-          offers: isChecked,
-        ),
-      );
+      context.read<ShopBloc>().add(CreateShop(shop));
     } else {
       UtilDialog.showInformation(
         context,
@@ -89,126 +94,102 @@ class _SignUpDialogState extends State<SignUpDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignUpBloc, SignUpState>(
-      listener: (context, state) {
-        /// Registering
-        if (state.isSubmitting!) {
-          UtilDialog.showWaiting(context);
-        }
-
-        /// Success
-        if (state.isSuccess!) {
-          UtilDialog.hideWaiting(context);
-          Navigator.of(context).pop("verify_email");
-        }
-
-        /// Failure
-        if (state.isFailure!) {
-          UtilDialog.hideWaiting(context);
-          switch (state.message) {
-            case "email-already-in-use":
-              Navigator.of(context).pop(["sign_in", _emailController.text]);
-              break;
-            default:
-              UtilDialog.showInformation(context, content: state.message);
-          }
-        }
-      },
-      child: BlocBuilder<SignUpBloc, SignUpState>(
-        builder: (context, state) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(SizeConfig.defaultSize * 0.3),
+    return BlocBuilder<CreateShopBloc, CreateShopState>(
+      builder: (context, state) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(
+              SizeConfig.defaultSize * 0.3,
             ),
-            child: SizedBox(
-              width: SizeConfig.defaultSize * 65,
-              height: SizeConfig.defaultSize * 90,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.defaultPadding * 3,
-                  vertical: SizeConfig.defaultPadding * 5,
-                ),
-                child: Form(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildHeaderText(),
-                        SizedBox(height: SizeConfig.defaultSize * 3),
-                        _buildPhoneNumberInput(),
-                        SizedBox(height: SizeConfig.defaultSize * 2),
-                        _buildEmailInput(),
-                        SizedBox(height: SizeConfig.defaultSize * 2),
-                        _buildHandleInput(),
-                        SizedBox(height: SizeConfig.defaultSize * 2),
-                        _buildPasswordInput(),
-                        SizedBox(height: SizeConfig.defaultSize * 2),
-                        _buildConfirmPasswordInput(),
-                        SizedBox(height: SizeConfig.defaultSize * 3),
-                        _buildRecieveOffers(),
-                        SizedBox(height: SizeConfig.defaultSize * 3),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildButtonCancel(),
-                            _buildButtonRegister(),
-                          ],
-                        ),
-                      ],
-                    ),
+          ),
+          child: SizedBox(
+            width: SizeConfig.defaultSize * 65,
+            height: SizeConfig.defaultSize * 90,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.defaultPadding * 3,
+                vertical: SizeConfig.defaultPadding * 5,
+              ),
+              child: Form(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildHeaderText(),
+                      SizedBox(height: SizeConfig.defaultSize * 3),
+                      _buildName(),
+                      SizedBox(height: SizeConfig.defaultSize * 2),
+                      _buildDescription(),
+                      SizedBox(height: SizeConfig.defaultSize * 2),
+                      _buildHandleInput(),
+                      SizedBox(height: SizeConfig.defaultSize * 2),
+                      _buildPasswordInput(),
+                      SizedBox(height: SizeConfig.defaultSize * 2),
+                      _buildConfirmPasswordInput(),
+                      SizedBox(height: SizeConfig.defaultSize * 3),
+                      _buildRecieveOffers(),
+                      SizedBox(height: SizeConfig.defaultSize * 3),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildButtonCancel(),
+                          _buildButtonRegister(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   _buildHeaderText() {
-    return Text("Sign Up", style: FONT_CONST.BOLD_DEFAULT_20);
+    return Text("Create your store", style: FONT_CONST.BOLD_DEFAULT_20);
   }
 
-  /// Phone number
-  _buildPhoneNumberInput() {
+  /// Name
+  _buildName() {
     return TextFormField(
       style: FONT_CONST.REGULAR_DEFAULT_18,
-      controller: _phoneNumberController,
-      keyboardType: TextInputType.phone,
+      controller: _name,
+      keyboardType: TextInputType.name,
       onChanged: (value) {
-        context.read<SignUpBloc>().add(PhoneChanged(phoneNumber: value));
+        context.read<ShopBloc>().add(NameChanged(name: value));
       },
       validator: (value) {
-        return !context.read<SignUpBloc>().state.isPhoneValid!
-            ? Translate.of(context).translate("invalid_phone_number")
+        return !context.read<ShopBloc>().state.isNameValid!
+            ? Translate.of(context).translate("invalid_name")
             : null;
       },
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       decoration: InputDecoration(
         border: InputBorder.none,
         icon: Icon(
-          Icons.phone_outlined,
+          Icons.person_outline,
           color: COLOR_CONST.greyColor,
           size: SizeConfig.defaultSize * 3,
         ),
-        labelText: Translate.of(context).translate("phone_number"),
+        labelText: Translate.of(context).translate("name"),
         labelStyle: FONT_CONST.REGULAR_DEFAULT_18,
       ),
     );
   }
 
-  _buildEmailInput() {
+  _buildDescription() {
     return TextFormField(
       style: FONT_CONST.REGULAR_DEFAULT_18,
       cursorColor: COLOR_CONST.greyColor,
       textInputAction: TextInputAction.next,
-      controller: _emailController,
+      controller: _description,
       onChanged: (value) {
-        context.read<SignUpBloc>().add(EmailChanged(email: value));
+        context.read<ShopBloc>().add(DescriptionChanged(description: value));
       },
       validator: (_) {
-        return !context.read<SignUpBloc>().state.isEmailValid!
-            ? Translate.of(context).translate('invalid_email')
+        return !context.read<ShopBloc>().state.isDescriptionValid!
+            ? Translate.of(context).translate('invalid_description')
             : null;
       },
       autovalidateMode: AutovalidateMode.always,
@@ -216,7 +197,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
       decoration: InputDecoration(
         border: InputBorder.none,
         icon: Icon(
-          Icons.email_outlined,
+          Icons.text_snippet_outlined,
           color: COLOR_CONST.greyColor,
           size: SizeConfig.defaultSize * 3,
         ),

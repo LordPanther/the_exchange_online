@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:the_exchange_online/presentation/common_blocs/cart/bloc.dart';
-import 'package:the_exchange_online/configs/router.dart';
 import 'package:the_exchange_online/configs/size_config.dart';
 import 'package:the_exchange_online/constants/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

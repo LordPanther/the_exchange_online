@@ -5,15 +5,14 @@ import 'package:the_exchange_online/configs/config.dart';
 import 'package:the_exchange_online/constants/color_constant.dart';
 import 'package:the_exchange_online/constants/font_constant.dart';
 import 'package:the_exchange_online/constants/image_constant.dart';
-import 'package:the_exchange_online/presentation/screens/my_shop/shop_screen.dart';
+import 'package:the_exchange_online/presentation/common_blocs/auth/auth_bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/auth/auth_state.dart';
+import 'package:the_exchange_online/presentation/widgets/buttons/cart_button.dart';
+import 'package:the_exchange_online/presentation/widgets/buttons/center_button.dart';
+import 'package:the_exchange_online/presentation/widgets/buttons/profile_button.dart';
+import 'package:the_exchange_online/presentation/widgets/others/search_field_widget.dart';
 import 'package:the_exchange_online/utils/auth_cycle_handler.dart';
 import 'package:the_exchange_online/utils/formatter.dart';
-
-import '../../../common_blocs/auth/auth_bloc.dart';
-import '../../../common_blocs/auth/auth_state.dart';
-import '../../../widgets/buttons/cart_button.dart';
-import '../../../widgets/buttons/center_button.dart';
-import '../../../widgets/others/search_field_widget.dart';
 
 class CenterHeader extends StatefulWidget {
   const CenterHeader({super.key});
@@ -131,11 +130,8 @@ class _CenterHeaderState extends State<CenterHeader> {
           name: UtilFormatter.getDisplayName(email),
         ),
         Text("|", style: FONT_CONST.REGULAR_DEFAULT_16),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.favorite, color: COLOR_CONST.redColor),
-        ),
         const CartButton(),
+        ProfileButton(onPressed: () => onNavigate("sign_out")),
       ],
     );
   }

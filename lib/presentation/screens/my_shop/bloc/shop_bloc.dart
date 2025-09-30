@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_exchange_online/data/repository/app_repository.dart';
 import 'package:the_exchange_online/data/repository/auth_repository/auth_repo.dart';
 import 'package:the_exchange_online/data/repository/store_repository/shop_repo.dart';
-import 'package:the_exchange_online/presentation/common_blocs/shop/bloc.dart';
-import 'package:the_exchange_online/presentation/common_blocs/shop/shop_state.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/create_shop_state.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
   final AuthRepository _authRepository = AppRepository.authRepository;
@@ -17,9 +17,6 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   ShopBloc() : super(ShopLoading()) {
     on<LoadShop>((event, emit) async {
       await _mapLoadShopToState(event, emit);
-    });
-    on<CreateShop>((event, emit) async {
-      await _mapCreateShopToState(event, emit);
     });
     on<DeleteShop>((event, emit) async {
       await _mapDeleteShopToState(event, emit);
@@ -71,13 +68,6 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       if (!emit.isDone) {
         emit(ShopLoadError(e.toString()));
       }
-    }
-  }
-
-  //Create shop
-  Future<void> _mapCreateShopToState(event, Emitter<ShopState> emit) async {
-    try {} catch (error) {
-      const ShopCreateError("store_create_error");
     }
   }
 

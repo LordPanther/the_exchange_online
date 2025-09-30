@@ -7,7 +7,7 @@ import 'package:the_exchange_online/presentation/common_blocs/order/order_bloc.d
 import 'package:the_exchange_online/presentation/common_blocs/sign_in/sign_in_bloc.dart';
 import 'package:the_exchange_online/presentation/common_blocs/sign_up/sign_up_bloc.dart';
 import 'package:the_exchange_online/presentation/common_blocs/verification/verification_bloc.dart';
-import 'package:the_exchange_online/presentation/common_blocs/shop/shop_bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/create_shop_bloc.dart';
 
 class CommonBloc {
   /// Bloc

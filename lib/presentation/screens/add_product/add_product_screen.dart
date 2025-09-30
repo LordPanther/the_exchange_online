@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_exchange_online/configs/config.dart';
-import 'package:the_exchange_online/presentation/common_blocs/shop/shop_bloc.dart';
+import 'package:the_exchange_online/presentation/common_blocs/create_shop/create_shop_bloc.dart';
 import 'package:the_exchange_online/presentation/screens/add_product/widget/add_product_body.dart';
 import 'package:the_exchange_online/presentation/screens/add_product/widget/add_product_header.dart';
 
